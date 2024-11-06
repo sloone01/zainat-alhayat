@@ -14,14 +14,16 @@ class PerformanceDialog extends Component
 
     public $cri_id;
     public $class_id;
+    public $end_date;
     public $student_id;
     public $cri_type;
     public $value;
     public $name;
 
-    public function __construct($name,$cid,$sid,$cype,$value,$class_id=1)
+    public function __construct($name,$cid,$sid,$cype,$value,$end_date=null,$class_id=1)
     {
         $this->cri_id = $cid;
+        $this->$end_date = $end_date;
         $this->class_id = $class_id;
         $this->student_id = $sid;
         $this->cri_type = $cype;

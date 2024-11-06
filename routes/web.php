@@ -91,19 +91,14 @@ Route::post('/search-logs',[ChildController::class,'adminSearch'])->name('search
 
 
 Route::get('/student-list/{l}', function ($l) {
-    $level = null;
-    if($l  != null){
-        $level = Level::find($l);
-    }else
-    {
-        $level = Level::first();
-    }
+    $level = Level::find($l);
+    
 
     
-    $students = User::where([['roles','Student'],['level_id',$level->id]])->get();
-    $criterias = Criteria::whereRaw('FIND_IN_SET(?, classes)', [$level->id])->get();
+    $students = User::where([['roles','Student'],['level_id',$l]])->get();
+    $criterias = Criteria::whereRaw('FIND_IN_SET(?, classes)', [$l])->get();
     
-    $mapped = $students->map(function ($student) use ($criterias, $level) {
+    $mapped = $students->map(function ($student) use ($criterias, $level,$l) {
         $performanceData = [];
         foreach($criterias as $c)
         {
@@ -113,14 +108,14 @@ Route::get('/student-list/{l}', function ($l) {
             'id' => $student->id,
             'name' => $student->name,
             'class' => $level->name,
-            'class_id' => $level->id,
+            'class_id' => $l,
         ] + $performanceData;
     });
     
 
     return view('childs.childs-performance',['worklogs'=> $mapped,
                 'classes'=> Level::all(),
-                'class_id' => $level->id,
+                'class_id' => $l,
                 'criterias'=> $criterias,
             ]);
             })

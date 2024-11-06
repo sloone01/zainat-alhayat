@@ -2,13 +2,16 @@
     <!-- Button trigger modal -->
     @isset($value)
     {{$value}}
-    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}"></i>Done</button>
+    @if($cri_type == 'D')
+    | {{ $end_date }} |
+    @endif
+    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Done</button>
     @else
-    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}"></i>Start</button>
+    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Start</button>
     @endisset
 
     <!-- Modal -->
-    <div class="modal fade text-left" id="exampleModalCenter{{$cri_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle{{$cri_id}}" aria-hidden="true">
+    <div class="modal fade text-left" id="exampleModalCenter{{$cri_id}}{{$student_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle{{$cri_id}}" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

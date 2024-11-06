@@ -68,7 +68,6 @@ Log-Book App - User
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Roles</th>
-                                    <th>Planet</th>
                                     <th>Created Date</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -81,7 +80,6 @@ Log-Book App - User
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->roles }}</td>
-                                    <td>{{ $user->name }}</td>
                                     <td>{{ $user->created_at }}</td>
                                     <td><span class="badge badge-{{$user->IsActive ? 'primary' : 'danger'}}-inverse">{{ $user->IsActive ? 'Active' : 'In Active' }}</span></td>
                                     <td><form>

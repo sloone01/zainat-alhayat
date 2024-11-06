@@ -72,22 +72,11 @@ Log-Book App  Edit User
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="inputCity">Planet</label>
-                                <select id="inputState" name="planet" class="form-control">
-                                    <option value="Choose" selected>Choose...</option>
-                                    @foreach($planets as $planet)
-                                        <option @if($user->planet_id == $planet->id) selected @endif value="{{ $planet->id }}">{{ $planet->name }}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                            <div class="form-group col-md-6">
                                 <label for="inputState">Role</label>
                                 <select class="select2-multi-select form-control" name="roles[]" multiple="multiple">
                                         <option @if(in_array('Admin',$roles)) selected @endif value="Admin">Admin</option>
-                                        <option @if(in_array('Resolver',$roles)) selected @endif value="Resolver">Resolver</option>
-                                        <option @if(in_array('General',$roles)) selected @endif value="General">General</option>
-                                        <option @if(in_array('Dep Admin',$roles)) selected @endif value="Dep Admin">Department Admin</option>
+                                        <option @if(in_array('Student',$roles)) selected @endif value="Resolver">Student</option>
+                                        <option @if(in_array('Supervisor',$roles)) selected @endif value="General">Supervisor</option>
                                 </select>
                             </div>
                         </div>

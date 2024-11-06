@@ -47,7 +47,7 @@
                             <li class="list-inline-item">
                                 <div class="notifybar">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle infobar-icon" href="#" role="button" id="notoficationlink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/assets/images/svg-icon/notifications.svg" class="img-fluid" alt="notifications">
+                                        <a class="dropdown-toggle infobar-icon" href="#" role="button" id="notoficationlink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/assets/images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">
                                         <span class="live-icon">{{ sizeof(\App\Providers\GeneralHelper::getNotification()) }}</span></a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notoficationlink">
                                             <div class="notification-dropdown-title">
@@ -81,10 +81,10 @@
                                             <div class="userbox">
                                                 <ul class="list-unstyled mb-0">
 {{--                                                    <li class="media dropdown-item">--}}
-{{--                                                        <a href="#" class="profile-icon"><img src="/assets/images/svg-icon/crm.svg" class="img-fluid" alt="user">My Profile</a>--}}
+{{--                                                        <a href="#" class="profile-icon"><img src="{{ asset('/assets/images/svg-icon/crm.svg')}}" class="img-fluid" alt="user">My Profile</a>--}}
 {{--                                                    </li>--}}
                                                     <li class="media dropdown-item">
-                                                        <a href="{{ route('logout') }}" class="profile-icon"><img src="/assets/images/svg-icon/logout.svg" class="img-fluid" alt="logout">Logout</a>
+                                                        <a href="{{ route('logout') }}" class="profile-icon"><img src="{{ asset('/assets/images/svg-icon/logout.svg')}}" class="img-fluid" alt="logout">Logout</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -95,8 +95,8 @@
                             <li class="list-inline-item menubar-toggle">
                                 <div class="menubar">
                                     <a class="menu-hamburger navbar-toggle bg-transparent" href="javascript:void();" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="true">
-                                        <img src="/assets/images/svg-icon/menu.svg" class="img-fluid menu-hamburger-collapse" alt="menu">
-                                        <img src="/assets/images/svg-icon/close.svg" class="img-fluid menu-hamburger-close" alt="close">
+                                        <img src="{{ asset('/assets/images/svg-icon/menu.svg')}}" class="img-fluid menu-hamburger-collapse" alt="menu">
+                                        <img src="{{ asset('/assets/images/svg-icon/close.svg')}}" class="img-fluid menu-hamburger-close" alt="close">
                                     </a>
                                  </div>
                             </li>
@@ -122,10 +122,10 @@
                             @if(\App\Providers\RoleHelper::haveRole(\App\Providers\RoleHelper::admin))
                                 <!-- <li><a href="{{url('/tickets-list')}}"><img src="/assets/images/svg-icon/customers.svg" class="img-fluid" alt="dashboard">Tickets</a></li> -->
                                 <li><a href="{{url('/users-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Users</a></li>
-                                <li><a href="{{url('/criteria-list')}}"><img src="/assets/images/svg-icon/dashboard.svg" class="img-fluid" alt="dashboard">Criterias</a></li>
-                                <li><a href="{{url('/classes-list')}}"><img src="/assets/images/svg-icon/dashboard.svg" class="img-fluid" alt="dashboard">Classes</a></li>
+                                <li><a href="{{url('/criteria-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Criterias</a></li>
+                                <li><a href="{{url('/classes-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Classes</a></li>
                             @endif
-                                <li><a href="{{url('/student-list/4')}}"><img src="/assets/images/svg-icon/customers.svg" class="img-fluid" alt="dashboard">Students</a></li>
+                                <li><a href="{{url('/student-list/4')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Students</a></li>
                              
                             <!-- @if(\App\Providers\RoleHelper::haveRole(\App\Providers\RoleHelper::dep_admin))
                                 <li><a href="{{url('/logs-dep-list')}}"><img src="/assets/images/svg-icon/customers.svg" class="img-fluid" alt="dashboard">Department Logs</a></li>

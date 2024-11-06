@@ -54,8 +54,7 @@ class UserController extends Controller
         $id = $request->id;
 
         $request->validate([
-            'name'=>'required|max:50',
-            'planet'=>'required|different:Choose',
+            'name'=>'required|max:50'
         ]);
         if(User::where([['email','=',$request->email],['id','!=', $id]])->count() > 0)
         {
@@ -73,7 +72,6 @@ class UserController extends Controller
         }
         $user = User::find($id);
         $user->name = $request->name;
-        $user->planet_id = $request->planet;
         $user->email = $request->email;
         $user->mobile = $request->mobile;
         $user->roles = implode(',',$request->roles);

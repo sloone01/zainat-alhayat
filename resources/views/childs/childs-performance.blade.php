@@ -155,7 +155,8 @@ Log-Book - Logs
                                     <td>
                                         
                                             {{ csrf_field() }}
-                                            <x-performance-dialog :name="$cri->name" :cid="$cri->id" :sid="$student['id']" :cype="$cri->type" :value="$student[$cri->name]['title'] ?? null" :class_id="$class_id" ></x-performance-dialog>
+                                            {{$student[$cri->name]['start_date'] ?? null}}
+                                            <x-performance-dialog :name="$cri->name" :cid="$cri->id" :sid="$student['id']" :cype="$cri->type" :value="$student[$cri->name]['title'] ?? null" :class_id="$class_id" :end_date="$student[$cri->name]['start_date'] ?? null" ></x-performance-dialog>
  
                                     </td>
                                     @endforeach

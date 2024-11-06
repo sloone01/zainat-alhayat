@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\WorkLog;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class CriteriaController extends Controller
@@ -78,21 +79,22 @@ class CriteriaController extends Controller
         Performance::where([['criteria_id',$request->criteria_id],
          ['child_id',$request->child_id],['status','N']])->update(['status'=>'Y']);
          
+        $stu = User::find($request->child_id);
         $planet  = new Performance();
         $planet->title = $request->title;
         $planet->start_date = $request->end_date;
         $planet->child_id = $request->child_id;
         $planet->criteria_id = $request->criteria_id;
-        $planet->created_by = 1;
+        $planet->created_by = Auth::user()->id;
         $planet->save();
 
         $level = Level::find($request->class_id);
-        $students = User::where([['roles', 'Student'], ['level_id', $level->id]])->get();
-        $criterias = Criteria::whereRaw('FIND_IN_SET(?, classes)', [$level->id])->get();
+        $students = User::where([['roles', 'Student'], ['level_id', $stu->level_id]])->get();
+        $criterias = Criteria::whereRaw('FIND_IN_SET(?, classes)', [$stu->level_id])->get();
 
         
 
-        $mapped = $students->map(function ($student) use ($criterias, $level) {
+        $mapped = $students->map(function ($student) use ($criterias, $stu) {
             $performanceData = [];
             foreach ($criterias as $c) {
                 $performanceData[$c->name] = Performance::where([['criteria_id', $c->id], ['child_id', $student->id],['status','N']])->first();
@@ -100,8 +102,8 @@ class CriteriaController extends Controller
             return [
                 'id' => $student->id,
                 'name' => $student->name,
-                'class' => $level->name,
-                'class_id' => $level->id,
+                'class' => $student->name,
+                'class_id' => $stu->level_id,
             ] + $performanceData;
         });
 
@@ -109,7 +111,7 @@ class CriteriaController extends Controller
         return view('childs.childs-performance', [
             'worklogs' => $mapped,
             'classes' => Level::all(),
-            'class_id' => $level->id,
+            'class_id' => $stu->level_id,
             'criterias' => $criterias,
         ]);
 

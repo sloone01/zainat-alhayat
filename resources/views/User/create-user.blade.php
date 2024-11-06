@@ -81,9 +81,9 @@ Log-Book App  Add User
                             <div class="form-group col-md-6">
                                 <label for="inputState">Role</label>
                                 <select class="select2-multi-select form-control" name="roles[]" multiple="multiple">
-                                        <option selected value="admin">Student</option>
-                                        <option value="eng">Supervisor</option>
-                                        <option value="head">Admin</option>
+                                        <option selected value="Student">Student</option>
+                                        <option value="Supervisor">Supervisor</option>
+                                        <option value="Admin">Admin</option>
                                 </select>
                             </div>
                         </div>
