@@ -125,7 +125,8 @@
                                 <li><a href="{{url('/criteria-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Criterias</a></li>
                                 <li><a href="{{url('/classes-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Classes</a></li>
                             @endif
-                                <li><a href="{{url('/student-list/4')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Students</a></li>
+                                <li><a href="{{url('/student-list/1')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Students</a></li>
+                                <li><a href="{{url('/reading-list/1')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Reading</a></li>
                              
                             <!-- @if(\App\Providers\RoleHelper::haveRole(\App\Providers\RoleHelper::dep_admin))
                                 <li><a href="{{url('/logs-dep-list')}}"><img src="/assets/images/svg-icon/customers.svg" class="img-fluid" alt="dashboard">Department Logs</a></li>

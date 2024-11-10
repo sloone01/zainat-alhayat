@@ -6,8 +6,10 @@ use App\Models\Criteria;
 use App\Models\Level;
 use App\Models\Performance;
 use App\Models\planet;
+use App\Models\Reading;
 use App\Models\User;
 use App\Models\WorkLog;
+use Dotenv\Store\File\Reader;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -114,6 +116,40 @@ class CriteriaController extends Controller
             'class_id' => $stu->level_id,
             'criterias' => $criterias,
         ]);
+
+
+    }
+    public function addReading(Request $request)
+    {
+
+        Reading::where([['child_id',$request->child_id],
+         ['status','N']])->update(['status'=>'Y']);
+
+         $sups = User::where([['roles','Supervisor']])->get();
+         
+        $stu = User::find($request->child_id);
+        $planet  = new Reading();
+        $planet->title = $request->title;
+        $planet->start_date = $request->end_date;
+        $planet->child_id = $request->child_id;
+        $planet->supervisor_id = $request->sup;
+        $planet->created_by = Auth::user()->id;
+        $planet->save();
+
+
+        $students = User::leftJoin('readings', function($join) {
+            $join->on('users.id', '=', 'readings.child_id')
+            ->where('readings.status', '=', 'N');
+          })->where([['users.roles','Student']])
+          ->select('users.id as user_id','users.*', 'readings.*')
+          ->get();
+        
+        
+    
+        return view('childs.childs-reading',['worklogs'=> $students,
+                    'sups'=> $sups,
+                    'sup_id'=>$sups[0]['id']
+                ]);
 
 
     }

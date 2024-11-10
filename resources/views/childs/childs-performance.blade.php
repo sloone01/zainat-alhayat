@@ -147,9 +147,9 @@ Log-Book - Logs
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(session('tickets') !== null ? session('tickets') : $worklogs as $student)
+                                @foreach(session('tickets') !== null ? session('tickets') : $worklogs as $i=>$student)
                                 <tr>
-                                    <td><a href="{{ url("single-student",$student['id']) }}">{{$student['id']}}</a> </td>
+                                    <td><a href="{{ url("single-student",$student['id']) }}">{{$i+1}}</a> </td>
                                     <td>{{$student['name']}}</td>
                                     @foreach($criterias as $cri)
                                     <td>

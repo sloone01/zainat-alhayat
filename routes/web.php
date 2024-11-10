@@ -16,7 +16,9 @@ use App\Models\planet;
 use App\Models\Shift;
 use App\Models\Criteria;
 use App\Models\Performance;
+use App\Models\Reading;
 use App\Providers\RoleHelper;
+use Dotenv\Store\File\Reader;
 use \Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -82,13 +84,32 @@ Route::get('/delete-jobType/{id}',[LevelController::class,'deleteJob']
 
 
 Route::post('/add-performance',[CriteriaController::class,'savePerformance'])->name('add-performance')->middleware(ADMIN);
-
+Route::post('/add-reading',[CriteriaController::class,'addReading'])->name('add-reading')->middleware(ADMIN);
 Route::post('/save-class',[LevelController::class,'saveClass'])->name('save-class')->middleware(ADMIN);
 Route::post('/save-edit-class',[LevelController::class,'saveEditClass'])->name('save-edit-class')->middleware(ADMIN);
 Route::post('/saveEditCri',[LevelController::class,'saveEditCri'])->name('saveEditCri')->middleware(ADMIN);
 Route::get('/export',[ChildController::class,'export'])->name('export')->middleware(OTHER);
 Route::post('/search-logs',[ChildController::class,'adminSearch'])->name('search-logs')->middleware(OTHER);;
 
+Route::get('/reading-list/{l}', function ($l) {
+
+    $sups = User::where([['roles','Supervisor']])->get();
+    
+    $students = User::leftJoin('readings', function($join) use ($l) {
+        $join->on('users.id', '=', 'readings.child_id')
+        ->where('readings.status', '=', 'N')
+        ->where('readings.supervisor_id','=',$l);
+      })->where([['users.roles','Student']])
+      ->select('users.id as user_id','users.*', 'readings.*')
+      ->get();
+    
+
+    return view('childs.childs-reading',['worklogs'=> $students,
+                'sups'=> $sups,
+                'sup_id'=>$sups[0]['id']
+            ]);
+            })
+    ->name('reading-list')->middleware(OTHER);
 
 Route::get('/student-list/{l}', function ($l) {
     $level = Level::find($l);

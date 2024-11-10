@@ -29,6 +29,10 @@ class User extends Authenticatable
         return $this->belongsTo(Level::class,'level_id','id');
     }
 
+    public function supervisor(){
+        return $this->belongsTo(User::class,'supervisor_id','id');
+    }
+
     public function userComments()
     {
         return $this->hasMany(Comment::class,'child_id','id');

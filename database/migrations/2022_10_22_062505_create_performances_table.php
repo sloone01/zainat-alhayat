@@ -24,7 +24,6 @@ return new class extends Migration
             $table->foreign('criteria_id')->references('id')->on('criterias');
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('child_id')->references('id')->on('users');
-        
             $table->timestamps();
         });
     }
