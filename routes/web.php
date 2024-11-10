@@ -87,7 +87,7 @@ Route::post('/add-performance',[CriteriaController::class,'savePerformance'])->n
 Route::post('/add-reading',[CriteriaController::class,'addReading'])->name('add-reading')->middleware(ADMIN);
 Route::post('/save-class',[LevelController::class,'saveClass'])->name('save-class')->middleware(ADMIN);
 Route::post('/save-edit-class',[LevelController::class,'saveEditClass'])->name('save-edit-class')->middleware(ADMIN);
-Route::post('/saveEditCri',[LevelController::class,'saveEditCri'])->name('saveEditCri')->middleware(ADMIN);
+Route::post('/saveEditCri',[CriteriaController::class,'saveEditCri'])->name('saveEditCri')->middleware(ADMIN);
 Route::get('/export',[ChildController::class,'export'])->name('export')->middleware(OTHER);
 Route::post('/search-logs',[ChildController::class,'adminSearch'])->name('search-logs')->middleware(OTHER);;
 

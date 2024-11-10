@@ -43,7 +43,7 @@ class CriteriaController extends Controller
     }
     public function saveEditCri(Request $request)
     {
-        $planet  = Criteria::find($request->id);
+        $planet  = Criteria::find($request->cri_id);
 
         $planet->name = $request->name;
         $planet->classes = implode(',', $request->levels);
@@ -110,12 +110,21 @@ class CriteriaController extends Controller
         });
 
 
-        return view('childs.childs-performance', [
-            'worklogs' => $mapped,
-            'classes' => Level::all(),
-            'class_id' => $stu->level_id,
-            'criterias' => $criterias,
-        ]);
+        // return view('childs.childs-performance', [
+        //     'worklogs' => $mapped,
+        //     'classes' => Level::all(),
+        //     'class_id' => $stu->level_id,
+        //     'criterias' => $criterias,
+        // ]);
+
+        return Redirect::route('student-list',['l'=>$stu->level_id])->with(
+            [
+                'worklogs' => $mapped,
+                'classes' => Level::all(),
+                'class_id' => $stu->level_id,
+                'criterias' => $criterias,
+            ]
+            );
 
 
     }
@@ -150,6 +159,13 @@ class CriteriaController extends Controller
                     'sups'=> $sups,
                     'sup_id'=>$sups[0]['id']
                 ]);
+
+                return Redirect::route('reading-list',['l'=>$stu->$sups[0]['id']])->with(
+                    [
+                        'sups'=> $sups,
+                        'sup_id'=>$sups[0]['id']
+                    ]
+                    );
 
 
     }

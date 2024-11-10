@@ -1,9 +1,11 @@
 <div class="widgetbar">
     <!-- Button trigger modal -->
     @isset($value)
-    {{$value}}
+    
     @if($cri_type == 'D')
-    | {{ $end_date }} |
+    <form method="post" action="{{ route('add-performance') }}">
+        <button type="submit" class="btn btn-danger"></i>Not Done</button>
+    </form>
     @endif
     <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Done</button>
     @else
@@ -39,6 +41,7 @@
                             @endif
                         </div>
                         <button type="submit" class="btn btn-primary"></i>Save</button>
+                        
                     </form>
                 </div>
             </div>

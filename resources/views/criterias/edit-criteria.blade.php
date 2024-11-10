@@ -34,7 +34,7 @@ Log-Book App  Edit Criteria
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header">
-                    <h5 class="card-title">Add New Criteria</h5>
+                    <h5 class="card-title">Update Criteria</h5>
                 </div>
                 <div class="card-body">
                     @if ($errors->any())
@@ -48,6 +48,7 @@ Log-Book App  Edit Criteria
                     @endif
                      <form method="post" action="{{ route('saveEditCri') }}">
                           {{ csrf_field()  }}
+                          <input type="hidden" value="{{ $id }}" name='cri_id' class="form-control" name="id">
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="inputPassword4">Name</label>
@@ -65,8 +66,8 @@ Log-Book App  Edit Criteria
                                 <label for="inputState">Type</label>
                                 <select class="select2-multi-select form-control" name="cri_type">
                                         <option @if($tpe == 'C') selected @endif value='C'>Completed/Not Completed</option>
-                                        <option Value='D'>Date Considerable</option>
-                                        <option value='N'>Numeric Sequence</option>
+                                        <option @if($tpe == 'D') selected @endif Value='D'>Date Considerable</option>
+                                        <option @if($tpe == 'N') selected @endif value='N'>Numeric Sequence</option>
                                 </select>
                             </div>
                             

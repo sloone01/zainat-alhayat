@@ -6,6 +6,7 @@ use App\Mail\MailHelper;
 use App\Mail\Subscribe;
 use App\Mail\TicketEmail;
 use App\Models\Department;
+use App\Models\Level;
 use App\Models\Problem;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -61,11 +62,12 @@ class UserController extends Controller
             $user = new User();
             $user->id = $id;
             $user->name = $request->name;
-            $user->planet_id = $request->planet_id;
+            $user->level_id = $request->level_id;
             $user->email = $request->email;
             $user->mobile = $request->mobile;
             $user->roles = implode(',',$request->roles);
             return view('User.edit-user',['user'=> $user,
+                'classes'=>Level::all(),
                 'roles'=> explode(",",$user->roles),
                 'error'=> 'Email Already Used',
                 'departments'=> Department::where('status','=','ACT')->get()]);
@@ -73,6 +75,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->level_id = $request->level_id;
         $user->mobile = $request->mobile;
         $user->roles = implode(',',$request->roles);
         $user->save();
