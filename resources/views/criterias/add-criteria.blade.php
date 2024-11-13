@@ -1,5 +1,5 @@
 @section('title')
-Log-Book App  Add Criteria
+Zainat-Alhayat App  Add Criteria
 @endsection
 @extends('layouts.main')
 @section('style')

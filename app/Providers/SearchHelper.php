@@ -62,10 +62,21 @@ class SearchHelper
             'Submitted'=>'Not Completed'),
         
         );
-    public function prepareStatusQuery($query,$status,$request){
+    public function prepareStatusQuery($query,$request){
+    
+        $key = $request->key;
+
+        $query->when($key,function ($q) use ($key){
+            return $q->where('name','LIKE','%'.$key.'%')
+            ->orWhere('title','LIKE','%'.$key.'%');
+        });
+        return $query;
+    }
+
+    public function prepareCriQuery($query,$request){
         $status = $request->status;
     
-        $dates = [$request->job_date_f,$request->job_date_to];
+        //$dates = [$request->job_date_f,$request->job_date_to];
         $key = $request->key;
         $planets = $request->planets;
         $techs = $request->techs;
@@ -124,7 +135,7 @@ class SearchHelper
     public function getfiltersArray($request)
     {
         $filters = array();
-        $filters['techs'] = $request->techs ?:  array();
+        $filters['sups'] = $request->sups ?:  array();
         $filters['planets'] = $request->planets ?:  array();
         $filters['status'] = $request->status ?:  array();
         $filters['title'] = $request->title ?:  '';

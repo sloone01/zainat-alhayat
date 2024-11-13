@@ -1,5 +1,5 @@
 @section('title')
-Log-Book - Logs
+Zainat-Alhayat - Logs
 @endsection
 @extends('layouts.main')
 @section('style')
@@ -76,7 +76,7 @@ Log-Book - Logs
                                         </ul>
                                     </div>
                                     @endif
-                                    <form method="post" action="{{ route('search-logs') }}">
+                                    <form method="post" action="{{ route('search-reading') }}">
                                         {{ csrf_field()  }}
                                         <div class="form-row">
 
@@ -100,6 +100,7 @@ Log-Book - Logs
                                             <div class="form-group col-md-3">
                                                 <label for="inputEmail4">Classes</label>
                                                 <select class="select2-multi-select" placeholer="Select" name="classes" id='problemChange'>
+                                                    <option>Select..</option>
                                                     @foreach($classes as $class)
                                                     <option  @if($class_id == $class->id) selected @endif @isset($filters) @if(in_array($class->id,$filters['classes'])) @endif @endisset value="{{ $class->id }}">{{ $class->title }}</option>
                                                     @endforeach
@@ -157,7 +158,7 @@ Log-Book - Logs
                                             {{ csrf_field() }}
                                             <div class="row">
                                                 <div class="col">
-                                                    {{$student[$cri->name]['title']}} || {{$student[$cri->name]['start_date'] ?? null}}
+                                                    {{$student[$cri->name]['title'] ?? null }}  {{ $student[$cri->name]['start_date'] ?? null}}
                                                 </div>
                                                 <div class="col">
                                                     <x-performance-dialog :name="$cri->name" :cid="$cri->id" :sid="$student['id']" :cype="$cri->type" :value="$student[$cri->name]['title'] ?? null" :class_id="$class_id" :end_date="$student[$cri->name]['start_date'] ?? null" ></x-performance-dialog>

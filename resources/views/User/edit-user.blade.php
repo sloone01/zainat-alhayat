@@ -1,5 +1,5 @@
 @section('title')
-Log-Book App  Edit User
+Zainat-Alhayat App  Edit User
 @endsection
 @extends('layouts.main')
 @section('style')
@@ -84,7 +84,7 @@ Log-Book App  Edit User
                                 <select id="inputState" name="level_id" class="form-control">
                                     <option value="Choose" selected>Choose...</option>
                                     @foreach($criterias as $planet)
-                                        <option @if($user->level_id == $planet->id) selected @endif value="{{ $planet->id }}">{{ $planet->name }}</option>
+                                        <option @if($user->level_id == $planet->id) selected @endif value="{{ $planet->id }}">{{ $planet->title }}</option>
                                     @endforeach
                                 </select>
 

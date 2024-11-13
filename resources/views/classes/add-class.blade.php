@@ -1,5 +1,5 @@
 @section('title')
-Log-Book App Add JobType
+Zainat-Alhayat App Add JobType
 @endsection
 @extends('layouts.main')
 @section('style')

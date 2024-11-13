@@ -123,7 +123,7 @@ class UserController extends Controller
             if($user->first_login == 1){
                 return Redirect::route('user-reset-page');
             }
-            return redirect()->route('student-list',['l'=>1]);
+            return redirect()->route('student-list',['id'=>0]);
         }
 
         return back()->with('error','Wrong Credential');

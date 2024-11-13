@@ -1,5 +1,5 @@
 @section('title')
-Log-Book App  Edit Criteria
+Zainat-Alhayat App  Edit Criteria
 @endsection
 @extends('layouts.main')
 @section('style')

@@ -125,8 +125,8 @@
                                 <li><a href="{{url('/criteria-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Criterias</a></li>
                                 <li><a href="{{url('/classes-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Classes</a></li>
                             @endif
-                                <li><a href="{{url('/student-list/1')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Students</a></li>
-                                <li><a href="{{url('/reading-list/1')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Reading</a></li>
+                                <li><a href="{{url('/student-list/0')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Students</a></li>
+                                <li><a href="{{url('/reading-list/0')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Reading</a></li>
                              
                             <!-- @if(\App\Providers\RoleHelper::haveRole(\App\Providers\RoleHelper::dep_admin))
                                 <li><a href="{{url('/logs-dep-list')}}"><img src="/assets/images/svg-icon/customers.svg" class="img-fluid" alt="dashboard">Department Logs</a></li>
@@ -145,7 +145,7 @@
     <!-- Start Footerbar -->
     <div class="footerbar">
         <footer class="footer">
-            <p class="mb-0">© OMIFCO Log-Book.</p>
+            <p class="mb-0">© OMIFCO Zainat-Alhayat.</p>
         </footer>
     </div>
     <!-- End Footerbar -->

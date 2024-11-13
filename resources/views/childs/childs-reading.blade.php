@@ -1,5 +1,5 @@
 @section('title')
-Log-Book - Logs
+Zainat-Alhayat - Logs
 @endsection
 @extends('layouts.main')
 @section('style')
@@ -42,7 +42,7 @@ Log-Book - Logs
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header">
-                    <h5 class="card-title">Students</h5>
+                    <h5 class="card-title">{{ $worklogs->count() }} Students</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -76,7 +76,7 @@ Log-Book - Logs
                                         </ul>
                                     </div>
                                     @endif
-                                    <form method="post" action="{{ route('search-logs') }}">
+                                    <form method="post" action="{{ route('search-reading') }}">
                                         {{ csrf_field()  }}
                                         <div class="form-row">
 
@@ -98,22 +98,25 @@ Log-Book - Logs
                                             </div>
 
                                             <div class="form-group col-md-3">
-                                                <label for="inputEmail4">Classes</label>
-                                                <select class="select2-multi-select" placeholer="Select" name="classes" id='problemChange'>
+                                                <label for="inputEmail4">Teacher</label>
+                                                <select class="select2-multi-select" placeholer="Select" name="supes" id='problemChange'>
+                                                    <option value="0">All</option>
                                                     @foreach($sups as $sup)
-                                                    <option  @if($sup_id == $sup->id) selected @endif @isset($filters) @if(in_array($class->id,$filters['sups'])) @endif @endisset value="{{ $sup->id }}">{{ $sup->name }}</option>
+                                                    <option  @if($sup_id == $sup->id) selected @endif @isset($filters) @if(in_array($sup->id,$filters['sups'])) @endif @endisset value="{{ $sup->id }}">{{ $sup->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-
-
-                                            <div class="form-group col-md-1">
+                                            
+                                            
+                                        </div>
+                                        <div class="row">
+                                        <div class="form-group col-md-1">
                                                 <button type="submit" name="action" value="noprint" class="btn btn-primary">Search</button>
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <button type="submit" name="action" value="print" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter"></i>Print</button>
                                             </div>
-                                            
+
                                         </div>
 
                                     </form>
@@ -121,9 +124,7 @@ Log-Book - Logs
                             </div>
                         </div>
 
-                        <div class="col-lg-12">
-
-                        </div>
+                        
                         <!-- End col -->
                     </div>
                     <div class="table-responsive">
@@ -141,14 +142,14 @@ Log-Book - Logs
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(session('tickets') !== null ? session('tickets') : $worklogs as $student)
+                                @foreach(session('tickets') !== null ? session('tickets') : $worklogs as $i=>$student)
                                 <tr>
-                                    <td><a href="{{ url("single-student",$student->id) }}">{{$student->user_id}}</a> </td>
+                                    <td><a href="{{ url("single-student",$student->id) }}">{{$i+1}}</a> </td>
                                     <td>{{$student->name}}</td>
                                     <td>{{$student->title}}</td>
                                     <td>{{$student->supervisor ? $student->supervisor->name : ""}}</td>
-                                    <td>{{$student->created_at}}</td>
-                                    <td>{{$student->start_date }}</td>
+                                    <td>{{$student->start_date}}</td>
+                                    <td>{{$student->end_date }}</td>
                                     <td>
                                             {{ csrf_field() }}
                                             <x-reading :sups="$sups" :sid="$student->user_id"></x-reading>

@@ -83,60 +83,71 @@ Route::get('/delete-jobType/{id}',[LevelController::class,'deleteJob']
 )->name('delete-jobType')->middleware(ADMIN);
 
 
+Route::post('/change-status',[CriteriaController::class,'changeStatus'])->name('change-status')->middleware(ADMIN);
 Route::post('/add-performance',[CriteriaController::class,'savePerformance'])->name('add-performance')->middleware(ADMIN);
 Route::post('/add-reading',[CriteriaController::class,'addReading'])->name('add-reading')->middleware(ADMIN);
 Route::post('/save-class',[LevelController::class,'saveClass'])->name('save-class')->middleware(ADMIN);
 Route::post('/save-edit-class',[LevelController::class,'saveEditClass'])->name('save-edit-class')->middleware(ADMIN);
 Route::post('/saveEditCri',[CriteriaController::class,'saveEditCri'])->name('saveEditCri')->middleware(ADMIN);
 Route::get('/export',[ChildController::class,'export'])->name('export')->middleware(OTHER);
-Route::post('/search-logs',[ChildController::class,'adminSearch'])->name('search-logs')->middleware(OTHER);;
+Route::post('/search-reading',[ChildController::class,'adminSearch'])->name('search-reading')->middleware(OTHER);;
 
 Route::get('/reading-list/{l}', function ($l) {
 
     $sups = User::where([['roles','Supervisor']])->get();
+
     
-    $students = User::leftJoin('readings', function($join) use ($l) {
+    $query = User::leftJoin('readings', function($join) use ($l) {
         $join->on('users.id', '=', 'readings.child_id')
-        ->where('readings.status', '=', 'N')
-        ->where('readings.supervisor_id','=',$l);
-      })->where([['users.roles','Student']])
-      ->select('users.id as user_id','users.*', 'readings.*')
-      ->get();
+        ->where('readings.status', '=', 'N');
+        
+      })->where([['users.roles','Student']]);
+      
+
+      
+
+    if ($l != 0) {
+        $query->whereNotNull('readings.supervisor_id'); 
+        $query->where('readings.supervisor_id','=',$l);
+    }
     
+    $students = $query->select('users.id as user_id','users.*', 'readings.*')
+      ->get();
 
     return view('childs.childs-reading',['worklogs'=> $students,
                 'sups'=> $sups,
-                'sup_id'=>$sups[0]['id']
+                'sup_id'=>$l
             ]);
             })
     ->name('reading-list')->middleware(OTHER);
 
-Route::get('/student-list/{l}', function ($l) {
-    $level = Level::find($l);
+Route::get('/student-list/{id}', function ($id) {
+    $level = Level::find($id);
+    $level = $level == null ? new Level() : $level;
     
 
     
-    $students = User::where([['roles','Student'],['level_id',$l]])->get();
-    $criterias = Criteria::whereRaw('FIND_IN_SET(?, classes)', [$l])->get();
+    $students = User::where([['roles','Student'],['level_id',$level->id]])->get();
+    $criterias = Criteria::whereRaw('FIND_IN_SET(?, classes)', [$level->id])->get();
     
-    $mapped = $students->map(function ($student) use ($criterias, $level,$l) {
+    $mapped = $students->map(function ($student) use ($criterias, $level) {
         $performanceData = [];
         foreach($criterias as $c)
         {
-            $performanceData[$c->name] = Performance::where([['criteria_id',$c->id],['child_id',$student->id],['status','N']])->first();
+            $performanceData[$c->name] = Performance::where([['criteria_id',$c->id],['child_id',$student->id],['status','<>','Y']])->first();
         }
         return [
             'id' => $student->id,
             'name' => $student->name,
             'class' => $level->name,
-            'class_id' => $l,
+            'class_id' => $level->id,
         ] + $performanceData;
     });
     
 
     return view('childs.childs-performance',['worklogs'=> $mapped,
                 'classes'=> Level::all(),
-                'class_id' => $l,
+                'class_id' => $id,
                 'criterias'=> $criterias,
             ]);
             })
@@ -192,7 +203,7 @@ Route::get('/edit-user/{id}',function ($id){
     $user = User::find($id);
     return view('User.edit-user',['user'=> $user,
         'roles'=> explode(",",$user->roles),
-        'criterias'=> Criteria::where([['status','=','ACT']])->get()]);
+        'criterias'=> Level::where([['status','=','ACT']])->get()]);
 }
 )->name('edit-user')->middleware(ADMIN);
 

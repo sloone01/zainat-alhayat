@@ -1,5 +1,5 @@
 @section('title')
-Log-Book App  Add User
+Zainat-Alhayat App  Add User
 @endsection
 @extends('layouts.main')
 @section('style')

@@ -183,8 +183,17 @@ public function export($logs)
 }
 public function adminSearch(Request $request){
 
-    $query = WorkLog::query();
-    $this->searchHelper->prepareStatusQuery($query,$request->status,$request);
+    $l = $request->supes;
+    $query = User::leftJoin('readings', function($join) use ($l) {
+        $join->on('users.id', '=', 'readings.child_id')
+        ->where('readings.status', '=', 'N');
+        if($l != 0){
+            $join->where('readings.supervisor_id','=',$l);
+        }
+      })->where([['users.roles','Student']]);
+      $query->select('users.id as user_id','users.*', 'readings.*');
+   
+    $this->searchHelper->prepareStatusQuery($query,$request);
 
     $logs = $query->get();
     
@@ -194,10 +203,9 @@ public function adminSearch(Request $request){
     }
     
 
-    return view('childs.childs-performance',['worklogs'=> $logs,
-    'techs'=> User::where('roles','=','tech')->get(),
-    'planets'=> planet::where([['status','=','ACT'],['isMain',false]])->get(),
-    'types'=> JobType::where('status','=','ACT')->get(),
+    return view('childs.childs-reading',['worklogs'=> $logs,
+    'sups'=> User::where('roles','=','Supervisor')->get(),
+    'sup_id'=>$request->supes,
     'filters'=>$this->searchHelper->getfiltersArray($request)
 ]);
 

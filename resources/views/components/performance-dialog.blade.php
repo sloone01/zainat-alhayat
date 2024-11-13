@@ -2,8 +2,8 @@
     <!-- Button trigger modal -->
     @isset($value)
     
-    @if($cri_type == 'D')
-    <form method="post" action="{{ route('add-performance') }}">
+    @if($cri_type == 'C')
+    <form method="post" action="{{ route('change-status') }}">
         <button type="submit" class="btn btn-danger"></i>Not Done</button>
     </form>
     @endif

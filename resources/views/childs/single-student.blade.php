@@ -1,5 +1,5 @@
 @section('title')
-Log-Book App Single Log
+Zainat-Alhayat App Single Log
 @endsection
 @extends('layouts.main')
 @section('style')

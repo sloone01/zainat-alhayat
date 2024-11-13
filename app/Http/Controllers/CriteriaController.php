@@ -75,6 +75,43 @@ class CriteriaController extends Controller
             'criterias' => Criteria::all()
         ]);
     }
+
+    public function changeStatus(Request $request)
+    {
+        $record = Performance::where([['criteria_id',$request->criteria_id],
+         ['child_id',$request->child_id],['status','N']])->update(['status'=>'ND']);
+         
+         dd($record);
+        $stu = User::find($request->child_id);
+
+        $students = User::where([['roles', 'Student'], ['level_id', $stu->level_id]])->get();
+        $criterias = Criteria::whereRaw('FIND_IN_SET(?, classes)', [$stu->level_id])->get();
+
+        
+
+        $mapped = $students->map(function ($student) use ($criterias, $stu) {
+            $performanceData = [];
+            foreach ($criterias as $c) {
+                $performanceData[$c->name] = Performance::where([['criteria_id', $c->id], ['child_id', $student->id],['status','<>','Y']])->first();
+            }
+            return [
+                'id' => $student->id,
+                'name' => $student->name,
+                'class' => $student->name,
+                'class_id' => $stu->level_id,
+            ] + $performanceData;
+        });
+
+
+        return Redirect::route('student-list',['id'=>$stu->level_id])->with(
+            [
+                'worklogs' => $mapped,
+                'classes' => Level::all(),
+                'class_id' => $stu->level_id,
+                'criterias' => $criterias,
+            ]
+            );
+    }
     public function savePerformance(Request $request)
     {
 
@@ -99,7 +136,7 @@ class CriteriaController extends Controller
         $mapped = $students->map(function ($student) use ($criterias, $stu) {
             $performanceData = [];
             foreach ($criterias as $c) {
-                $performanceData[$c->name] = Performance::where([['criteria_id', $c->id], ['child_id', $student->id],['status','N']])->first();
+                $performanceData[$c->name] = Performance::where([['criteria_id', $c->id], ['child_id', $student->id],['status','<>','Y']])->first();
             }
             return [
                 'id' => $student->id,
@@ -117,7 +154,7 @@ class CriteriaController extends Controller
         //     'criterias' => $criterias,
         // ]);
 
-        return Redirect::route('student-list',['l'=>$stu->level_id])->with(
+        return Redirect::route('student-list',['id'=>$stu->level_id])->with(
             [
                 'worklogs' => $mapped,
                 'classes' => Level::all(),
@@ -139,7 +176,8 @@ class CriteriaController extends Controller
         $stu = User::find($request->child_id);
         $planet  = new Reading();
         $planet->title = $request->title;
-        $planet->start_date = $request->end_date;
+        $planet->start_date = $request->start_date;
+        $planet->end_date = $request->end_date;
         $planet->child_id = $request->child_id;
         $planet->supervisor_id = $request->sup;
         $planet->created_by = Auth::user()->id;
@@ -155,17 +193,13 @@ class CriteriaController extends Controller
         
         
     
-        return view('childs.childs-reading',['worklogs'=> $students,
-                    'sups'=> $sups,
-                    'sup_id'=>$sups[0]['id']
-                ]);
 
-                return Redirect::route('reading-list',['l'=>$stu->$sups[0]['id']])->with(
-                    [
-                        'sups'=> $sups,
-                        'sup_id'=>$sups[0]['id']
-                    ]
-                    );
+        return Redirect::route('reading-list',['l'=>$request->sup])->with(
+            [
+                'sups'=> $sups,
+                'sup_id'=>$request->sup
+            ]
+            );
 
 
     }

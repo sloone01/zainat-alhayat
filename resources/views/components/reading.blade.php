@@ -38,7 +38,11 @@
                             </div>
                            
                             <div class="form-group col-md-6">
-                                <label for="doctordegree">Date</label>
+                                <label for="doctordegree">Start Date</label>
+                                <input type="date" name='start_date' class="form-control" id="doctordegree">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="doctordegree">End Date</label>
                                 <input type="date" name='end_date' class="form-control" id="doctordegree">
                             </div>
                         </div>
