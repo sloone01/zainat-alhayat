@@ -66,6 +66,7 @@ return array(
     'App\\Providers\\SearchHelper' => $baseDir . '/app/Providers/SearchHelper.php',
     'App\\Providers\\StatusConstants' => $baseDir . '/app/Providers/StatusConstants.php',
     'App\\View\\Components\\PerformanceDialog' => $baseDir . '/app/View/Components/PerformanceDialog.php',
+    'App\\View\\Components\\Reading' => $baseDir . '/app/View/Components/Reading.php',
     'ArielMejiaDev\\LarapexCharts\\AreaChart' => $vendorDir . '/arielmejiadev/larapex-charts/src/AreaChart.php',
     'ArielMejiaDev\\LarapexCharts\\BarChart' => $vendorDir . '/arielmejiadev/larapex-charts/src/BarChart.php',
     'ArielMejiaDev\\LarapexCharts\\Console\\ChartMakeCommand' => $vendorDir . '/arielmejiadev/larapex-charts/src/Console/ChartMakeCommand.php',

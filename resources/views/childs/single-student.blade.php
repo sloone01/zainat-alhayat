@@ -41,11 +41,27 @@ Zainat-Alhayat App Single Log
                                     <div class="media">
                                         <div class="media-body">
                                             <div class="form-row">
+                                                <h5>Numbers</h5>
+                                                <form action="{{ route('add-numbers') }}" method="post">
+                                                    {{ csrf_field()  }}
+                                                    <input type="hidden" name='student_id' value="{{ $log->id }}" />
+                                                        @php
+                                                            $numbersColor = $numbers->pluck('color', 'title')->toArray();
+                                                                            
+                                                        @endphp
+                                                        @for ($i = 1; $i <= 20; $i++)
+                                                        @php
+                                                            $color = $numbersColor[$i] ?? 'btn-light';
+                                                        @endphp
+                                                          <button type="submit" name='number' value="{{ $i }}" class="btn {{ $color }} mx-1" data-target="#exampleModalCenter">{{ $i }}</button>
+                                                        @endfor
+                                                </form>
                                             </div>
                                             <hr>
+
                                             <div class="form-row">
-                                            @foreach($cri as $c)
-                                                <div class="form-group col-md-3">
+                                                @foreach($cri as $c)
+                                                <div class="form-group col-md-6">
                                                     <table id="default-datatable" class="display table table-striped table-bordered">
                                                         <thead>
                                                             <tr>
@@ -53,12 +69,12 @@ Zainat-Alhayat App Single Log
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach($performance as $per)
-                                                            
+                                                            @foreach($performance->where('criteria_id',$c->id) as $per)
+
                                                             <tr>
                                                                 <td>{{$per->title}}</td>
                                                             </tr>
-                                                            
+
                                                             @endforeach
                                                         </tbody>
                                                     </table>
@@ -71,9 +87,9 @@ Zainat-Alhayat App Single Log
                                 </div>
                             </div>
                             <hr class="bg-secondary border-2 border-top border-secondary">
-                            
+
                         </div>
-                        
+
                     </div>
 
                 </div>

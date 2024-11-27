@@ -20,6 +20,8 @@ use App\Models\Reading;
 use App\Providers\RoleHelper;
 use Dotenv\Store\File\Reader;
 use \Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -85,7 +87,9 @@ Route::get('/delete-jobType/{id}',[LevelController::class,'deleteJob']
 
 Route::post('/change-status',[CriteriaController::class,'changeStatus'])->name('change-status')->middleware(ADMIN);
 Route::post('/add-performance',[CriteriaController::class,'savePerformance'])->name('add-performance')->middleware(ADMIN);
+Route::post('/add-performance2',[CriteriaController::class,'savePerformance'])->name('add-performance2')->middleware(ADMIN);
 Route::post('/add-reading',[CriteriaController::class,'addReading'])->name('add-reading')->middleware(ADMIN);
+Route::post('/add-numbers',[CriteriaController::class,'addNumbers'])->name('add-numbers')->middleware(ADMIN);
 Route::post('/save-class',[LevelController::class,'saveClass'])->name('save-class')->middleware(ADMIN);
 Route::post('/save-edit-class',[LevelController::class,'saveEditClass'])->name('save-edit-class')->middleware(ADMIN);
 Route::post('/saveEditCri',[CriteriaController::class,'saveEditCri'])->name('saveEditCri')->middleware(ADMIN);
@@ -238,7 +242,25 @@ Route::get('/reset-password/{id}',[UserController::class,'resetPassword']
 Route::get('/single-student/{id}', function ($id) {
     $user = User::find($id);
 
+    $cri = Criteria::where("type","N")->first();
+    $numbers = DB::table('performances')
+        ->select('*', DB::raw("
+            CASE 
+                WHEN DATEDIFF(CURRENT_DATE, created_at) < 30 THEN 'btn-danger'
+                WHEN DATEDIFF(CURRENT_DATE, created_at) < 60 THEN 'btn-success'
+                WHEN DATEDIFF(CURRENT_DATE, created_at) < 90 THEN 'btn-warning'
+                WHEN DATEDIFF(CURRENT_DATE, created_at) < 120 THEN 'btn-info'
+                WHEN DATEDIFF(CURRENT_DATE, created_at) < 150 THEN 'btn-dark'
+                ELSE 'green'
+            END AS color
+        "))
+        ->where([['criteria_id',$cri->id],['child_id',$id]])
+        ->get();
+
+       // dd($numbers);
+
     return view('childs.single-student',['log'=>$user,
+    'numbers'=> $numbers,
     'cri'=> Criteria::whereRaw('FIND_IN_SET(?, classes)', [$user->level_id])->get(),
     'performance'=>Performance::where([['child_id',$user->id]])->get()]);
 })->name('single-student')->middleware(OTHER);

@@ -625,6 +625,7 @@ class ComposerStaticInit8a2f90a8a0160d67dbb55c14e26a511a
         'App\\Providers\\SearchHelper' => __DIR__ . '/../..' . '/app/Providers/SearchHelper.php',
         'App\\Providers\\StatusConstants' => __DIR__ . '/../..' . '/app/Providers/StatusConstants.php',
         'App\\View\\Components\\PerformanceDialog' => __DIR__ . '/../..' . '/app/View/Components/PerformanceDialog.php',
+        'App\\View\\Components\\Reading' => __DIR__ . '/../..' . '/app/View/Components/Reading.php',
         'ArielMejiaDev\\LarapexCharts\\AreaChart' => __DIR__ . '/..' . '/arielmejiadev/larapex-charts/src/AreaChart.php',
         'ArielMejiaDev\\LarapexCharts\\BarChart' => __DIR__ . '/..' . '/arielmejiadev/larapex-charts/src/BarChart.php',
         'ArielMejiaDev\\LarapexCharts\\Console\\ChartMakeCommand' => __DIR__ . '/..' . '/arielmejiadev/larapex-charts/src/Console/ChartMakeCommand.php',

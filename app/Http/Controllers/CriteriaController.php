@@ -13,6 +13,7 @@ use Dotenv\Store\File\Reader;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class CriteriaController extends Controller
@@ -115,13 +116,14 @@ class CriteriaController extends Controller
     public function savePerformance(Request $request)
     {
 
+        $status = $request->postpone;
         Performance::where([['criteria_id',$request->criteria_id],
-         ['child_id',$request->child_id],['status','N']])->update(['status'=>'Y']);
+         ['child_id',$request->child_id],['status','N']])->update(['status'=> $status ? 'P':'Y']);
          
         $stu = User::find($request->child_id);
         $planet  = new Performance();
         $planet->title = $request->title;
-        $planet->start_date = $request->end_date;
+        $planet->start_date = $request->end_date ?? now() ;
         $planet->child_id = $request->child_id;
         $planet->criteria_id = $request->criteria_id;
         $planet->created_by = Auth::user()->id;
@@ -147,13 +149,6 @@ class CriteriaController extends Controller
         });
 
 
-        // return view('childs.childs-performance', [
-        //     'worklogs' => $mapped,
-        //     'classes' => Level::all(),
-        //     'class_id' => $stu->level_id,
-        //     'criterias' => $criterias,
-        // ]);
-
         return Redirect::route('student-list',['id'=>$stu->level_id])->with(
             [
                 'worklogs' => $mapped,
@@ -165,6 +160,27 @@ class CriteriaController extends Controller
 
 
     }
+
+    
+    public function addNumbers(Request $request)
+    {
+
+        $cri = Criteria::where("type","N")->first();
+        $planet  = new Performance();
+        $planet->title = $request->input('number');
+        $planet->child_id = $request->student_id;
+        $planet->start_date = now();
+        $planet->criteria_id = $cri->id;
+        $planet->status = "Y";
+        $planet->created_by = Auth::user()->id;
+        $planet->save();
+
+        return Redirect::route('single-student',['id'=>$request->student_id]);
+
+
+
+    }
+
     public function addReading(Request $request)
     {
 

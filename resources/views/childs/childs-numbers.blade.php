@@ -42,7 +42,7 @@ Zainat-Alhayat - Logs
         <div class="col-lg-12">
             <div class="card m-b-30">
                 <div class="card-header">
-                    <h5 class="card-title">Students</h5>
+                    <h5 class="card-title">{{ $worklogs->count() }} Students</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -98,31 +98,25 @@ Zainat-Alhayat - Logs
                                             </div>
 
                                             <div class="form-group col-md-3">
-                                                <label for="inputEmail4">Classes</label>
-                                                <select class="select2-multi-select" placeholer="Select" name="classes" id='problemChange'>
-                                                    <option>Select..</option>
-                                                    @foreach($classes as $class)
-                                                    <option  @if($class_id == $class->id) selected @endif @isset($filters) @if(in_array($class->id,$filters['classes'])) @endif @endisset value="{{ $class->id }}">{{ $class->title }}</option>
+                                                <label for="inputEmail4">Teacher</label>
+                                                <select class="select2-multi-select" placeholer="Select" name="supes" id='problemChange'>
+                                                    <option value="0">All</option>
+                                                    @foreach($sups as $sup)
+                                                    <option  @if($sup_id == $sup->id) selected @endif @isset($filters) @if(in_array($sup->id,$filters['sups'])) @endif @endisset value="{{ $sup->id }}">{{ $sup->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-3">
-                                                <label for="inputEmail4">Criterias</label>
-                                                <select class="select2-multi-select" placeholer="Select" name="criterias">
-                                                    @foreach($criterias as $class)
-                                                    <option @isset($filters) @if(in_array($class->id,$filters['criterias'])) selected @endif @endisset value="{{ $class->id }}">{{ $class->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-
-                                            <div class="form-group col-md-1">
+                                            
+                                            
+                                        </div>
+                                        <div class="row">
+                                        <div class="form-group col-md-1">
                                                 <button type="submit" name="action" value="noprint" class="btn btn-primary">Search</button>
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <button type="submit" name="action" value="print" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter"></i>Print</button>
                                             </div>
-                                            
+
                                         </div>
 
                                     </form>
@@ -130,9 +124,7 @@ Zainat-Alhayat - Logs
                             </div>
                         </div>
 
-                        <div class="col-lg-12">
-
-                        </div>
+                        
                         <!-- End col -->
                     </div>
                     <div class="table-responsive">
@@ -142,34 +134,28 @@ Zainat-Alhayat - Logs
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    @foreach($criterias as $cri)
-                                    <th>{{ $cri->name }}</th>
-                                    @endforeach
+                                    <th>Stage</th>
+                                    <th>Supervisor</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach(session('tickets') !== null ? session('tickets') : $worklogs as $i=>$student)
                                 <tr>
-                                    <td><a href="{{ url("single-student",$student['id']) }}">{{$i+1}}</a> </td>
-                                    <td>{{$student['name']}}</td>
-                                    @foreach($criterias as $cri)
+                                    <td><a href="{{ url("single-student",$student->id) }}">{{$i+1}}</a> </td>
+                                    <td>{{$student->name}}</td>
+                                    <td>{{$student->title}}</td>
+                                    <td>{{$student->supervisor ? $student->supervisor->name : ""}}</td>
+                                    <td>{{$student->start_date}}</td>
+                                    <td>{{$student->end_date }}</td>
                                     <td>
-                                        
                                             {{ csrf_field() }}
-                                            <div class="row">
-                                                <div class="col">
-                                                    {{$student[$cri->name]['title'] ?? null }}  {{ $student[$cri->name]['start_date'] ?? null}}
-                                                </div>
-                                                <div class="col">
-                                                    <x-performance-dialog :name="$cri->name" :cid="$cri->id" :sid="$student['id']" :cype="$cri->type" :value="$student[$cri->name]['title'] ?? null" :class_id="$class_id" :end_date="$student[$cri->name]['start_date'] ?? null" ></x-performance-dialog>
-                                                </div>
-
-                                            </div>
-                                            
-                                            
+                                            <x-reading :sups="$sups" :sid="$student->user_id"></x-reading>
  
                                     </td>
-                                    @endforeach
+                                    
                                 </tr>
                                 @endforeach
                             </tbody>

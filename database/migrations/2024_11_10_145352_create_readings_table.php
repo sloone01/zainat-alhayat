@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("title");
             $table->date("start_date");
+            $table->date("end_date");
             $table->unsignedBigInteger("created_by");
             $table->unsignedBigInteger("supervisor_id");
             $table->unsignedBigInteger("child_id");

@@ -1,13 +1,8 @@
 <div class="widgetbar">
     <!-- Button trigger modal -->
+ 
     @isset($value)
-    
-    @if($cri_type == 'C')
-    <form method="post" action="{{ route('change-status') }}">
-        <button type="submit" class="btn btn-danger"></i>Not Done</button>
-    </form>
-    @endif
-    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Done</button>
+    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Update</button>
     @else
     <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Start</button>
     @endisset
@@ -37,6 +32,17 @@
                             <div class="form-group col-md-6">
                                 <label for="doctordegree">Date</label>
                                 <input type="date" name='end_date' class="form-control" id="doctordegree">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="doctordegree">Postpone Current</label>
+                                <input type="checkbox" name='postpone' class="js-switch-primary" />
+                            </div>
+                            @endif
+                            @if($cri_type == 'C')
+                            <div class="form-group col-md-6">
+                                <br><br>
+                                <label for="doctordegree">is it completed?</label>
+                                <input type="checkbox" name='completed' class="js-switch-primary" />
                             </div>
                             @endif
                         </div>
