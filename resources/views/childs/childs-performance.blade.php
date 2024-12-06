@@ -99,7 +99,7 @@ Zainat-Alhayat - Logs
 
                                             <div class="form-group col-md-3">
                                                 <label for="inputEmail4">Classes</label>
-                                                <select class="select2-multi-select" placeholer="Select" name="classes" id='problemChange'>
+                                                <select class="select2-multi-select" placeholer="Select" name="classes">
                                                     <option>Select..</option>
                                                     @foreach($classes as $class)
                                                     <option  @if($class_id == $class->id) selected @endif @isset($filters) @if(in_array($class->id,$filters['classes'])) @endif @endisset value="{{ $class->id }}">{{ $class->title }}</option>
@@ -131,7 +131,15 @@ Zainat-Alhayat - Logs
                         </div>
 
                         <div class="col-lg-12">
-
+                        <div class="form-group col-md-3">
+                            <label for="inputEmail4">Classes</label>
+                            <select class="select2-multi-select" placeholer="Select" id='problemChange'>
+                                <option>Select..</option>
+                                @foreach($classes as $class)
+                                <option  @if($class_id == $class->id) selected @endif @isset($filters) @if(in_array($class->id,$filters['classes'])) @endif @endisset value="{{ $class->id }}">{{ $class->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         </div>
                         <!-- End col -->
                     </div>
@@ -158,7 +166,11 @@ Zainat-Alhayat - Logs
                                             {{ csrf_field() }}
                                             <div class="row">
                                                 <div class="col">
-                                                    {{$student[$cri->name]['title'] ?? null }}  {{ $student[$cri->name]['start_date'] ?? null}}
+                                                    @if($student[$cri->name] && $student[$cri->name]['isComplete'] == 'N')
+                                                    <span class="badge badge-pill badge-danger">{{$student[$cri->name]['title'] ?? null }}  {{ $student[$cri->name]['start_date'] ?? null}}</span>
+                                                    @else
+                                                    {{$student[$cri->name]['title'] ?? null }}
+                                                    @endif
                                                 </div>
                                                 <div class="col">
                                                     <x-performance-dialog :name="$cri->name" :cid="$cri->id" :sid="$student['id']" :cype="$cri->type" :value="$student[$cri->name]['title'] ?? null" :class_id="$class_id" :end_date="$student[$cri->name]['start_date'] ?? null" ></x-performance-dialog>

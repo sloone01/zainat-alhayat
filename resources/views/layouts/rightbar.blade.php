@@ -124,6 +124,8 @@
                                 <li><a href="{{url('/users-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Users</a></li>
                                 <li><a href="{{url('/criteria-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Criterias</a></li>
                                 <li><a href="{{url('/classes-list')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Classes</a></li>
+                                <li><a href="{{url('/timetables/0')}}"><img src="{{ asset('/assets/images/svg-icon/dashboard.svg') }}" class="img-fluid" alt="dashboard">Timetables</a></li>
+                            
                             @endif
                                 <li><a href="{{url('/student-list/0')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Students</a></li>
                                 <li><a href="{{url('/reading-list/0')}}"><img src="{{ asset('/assets/images/svg-icon/customers.svg') }}" class="img-fluid" alt="dashboard">Reading</a></li>

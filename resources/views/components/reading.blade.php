@@ -1,9 +1,7 @@
 <div class="widgetbar">
     <!-- Button trigger modal -->
     
-    
-    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$student_id}}"></i>Next</button>
-
+    <button type="button" data-toggle="modal" data-target="#exampleModalCenter{{$student_id}}" class="btn btn-round btn-outline-success"><i class="feather icon-plus"></i></button>
 
     <!-- Modal -->
     <div class="modal fade text-left" id="exampleModalCenter{{$student_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

@@ -1,11 +1,13 @@
 <div class="widgetbar">
     <!-- Button trigger modal -->
  
-    @isset($value)
-    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Update</button>
-    @else
-    <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Start</button>
-    @endisset
+    @if($cri_type != 'N')
+        @isset($value)
+        <button type="button" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}" class="btn btn-round btn-outline-success"><i class="feather icon-plus"></i></button>
+        @else
+        <button type="button" class="btn btn-primary-rgba" data-toggle="modal" data-target="#exampleModalCenter{{$cri_id}}{{$student_id}}"></i>Start</button>
+        @endisset
+    @endif
 
     <!-- Modal -->
     <div class="modal fade text-left" id="exampleModalCenter{{$cri_id}}{{$student_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle{{$cri_id}}" aria-hidden="true">
@@ -26,7 +28,7 @@
                             <input type="hidden" value="{{ $student_id }}" name='child_id' class="form-control" name="id">
                             <input type="hidden" value="{{ $class_id }}" name='class_id' class="form-control" name="id">
                                 <label for="doctorname">Title</label>
-                                <input type="text" name='title' @if($cri_type == 'N') readonly value="@isset($value) {{$value+1}} @else 1 @endisset" @endif class="form-control" id="doctorname">
+                                <input type="text" name='title' class="form-control" id="doctorname">
                             </div>
                             @if($cri_type == 'D')
                             <div class="form-group col-md-6">

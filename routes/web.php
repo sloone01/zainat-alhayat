@@ -10,17 +10,22 @@ use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\GeneralController;
 use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\ChildController;
+use App\Http\Controllers\SessionController;
 use App\Models\JobType;
 use App\Models\Level;
 use App\Models\planet;
 use App\Models\Shift;
 use App\Models\Criteria;
+use App\Models\FileUpload;
 use App\Models\Performance;
 use App\Models\Reading;
+use App\Models\Session;
+use App\Models\Timetable;
 use App\Providers\RoleHelper;
 use Dotenv\Store\File\Reader;
 use \Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +66,54 @@ Route::post('/update-planet',[CriteriaController::class,'editPlanetDetails'])->n
 Route::get('/criteria-list', function () {
     return view('criterias.criterias-list',['criterias'=> Criteria::all()]);}
 )->name('criterias')->middleware(ADMIN);
+
+
+Route::get('/delete-session/{id}', function ($id) {
+   $session =  Session::find($id);
+   $session->delete();
+   return Redirect::route('timetables',['id'=>$session->timetable_id]);
+});
+Route::post('/search-timetable',[SessionController::class,'searchTimetable'])->name('search-timetable')->middleware(OTHER);;
+
+Route::post('/add-session',[SessionController::class,'addSession'])->name('add-session')->middleware(ADMIN);
+Route::post('/edit-session',[SessionController::class,'editSession'])->name('edit-session')->middleware(ADMIN);
+
+
+Route::get('/add-session-file/{id}', function ($id) {
+
+    return view('hospital-doctor',[
+        'files'=> FileUpload::where('session_id',$id)->get(),
+        'session_id'=>$id]);}
+
+   
+)->name('add-session-file')->middleware(ADMIN);
+
+Route::post('/file-upload',[SessionController::class,'uploadFile'])->name('file-upload')->middleware(ADMIN);
+
+Route::get('/timetables/{id}', function ($id) {
+
+    $timetable = Timetable::find($id);
+    if($timetable === null)
+    {
+        $d = date('Y-m-d',strtotime('last sunday'));
+        if($id == 0){
+            $timetable = Timetable::where('start_date',$d)->first();
+        }
+        if($timetable === null ){
+            $timetable = new Timetable();
+            $timetable->start_date = $d;
+            $timetable->level_id = Level::first()->id;
+            $timetable->save();
+        }
+    }
+    $sessions = Session::where('timetable_id',$timetable->id)->get();
+    $sups = User::where([['roles','Supervisor']])->get();
+    return view('timetable.view-timetable',[
+        'classes'=> Level::all(),
+        'timetable'=>$timetable,
+        'sessions'=>$sessions,
+        'sups'=>$sups]);}
+)->name('timetables')->middleware(ADMIN);
 
 
 Route::get('/classes-list', function () {
@@ -129,7 +182,6 @@ Route::get('/student-list/{id}', function ($id) {
     $level = Level::find($id);
     $level = $level == null ? new Level() : $level;
     
-
     
     $students = User::where([['roles','Student'],['level_id',$level->id]])->get();
     $criterias = Criteria::whereRaw('FIND_IN_SET(?, classes)', [$level->id])->get();
@@ -138,8 +190,38 @@ Route::get('/student-list/{id}', function ($id) {
         $performanceData = [];
         foreach($criterias as $c)
         {
-            $performanceData[$c->name] = Performance::where([['criteria_id',$c->id],['child_id',$student->id],['status','<>','Y']])->first();
+            $performance = null;
+            if($c->type == 'N')
+            {
+                $performances = Performance::where([['criteria_id',$c->id],['child_id',$student->id],['status','Y']])->get();
+                $performance = $performances->first();
+                if($performance){
+                    $performance->title = $performances->pluck('title')->implode(',');
+                }
+            }else{
+                $performance = Performance::where([['criteria_id',$c->id],['child_id',$student->id],['status','<>','Y']])->first();
+            }
+            
+            if($performance)
+            {
+                switch($c->type){
+                    case 'D':
+                        $performance->isComplete = (DateTime::createFromFormat('Y-m-d', $performance['start_date']) > now() ? 'Y' : 'N');
+                        break;
+                    case 'C':
+                        $performance->isComplete = $performance->status;
+                        break;
+                    default:
+                        $performance->isComplete = 'NA';
+                        break;
+                }
+            } 
+                
+            $performanceData[$c->name] = $performance;
         }
+
+
+    
         return [
             'id' => $student->id,
             'name' => $student->name,
